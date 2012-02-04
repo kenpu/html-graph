@@ -1,0 +1,99 @@
+<html>
+  <head>
+    <style>
+      div {
+        margin: 0 0 0 0;
+        padding: 0 0 0 0;
+      }
+      .everything {
+        position: relative;
+        top: 100px;
+        left: 100px;
+        border: thin solid #aaa;
+        padding: 10px 10px 10px 10px;
+        display: block;
+        width: 600px;
+        height: 600px;
+      }
+      .lead .top-half { 
+        border-left: thin solid black; 
+        border-bottom: thin solid black;
+        width: 50px;
+        height: 50px;
+      }
+      .lead .bottom-half {
+        border-left: thin solid blue;
+        width: 50px;
+        height: 50px;
+      }
+      .lead .first {
+        border-left: none;
+      }
+      .lead .last {
+        border-left: none;
+      }
+      .lead {
+        float: left;
+      }
+      .trail {
+        float: left;
+      }
+      .trail .top-half {
+        width: 50px;
+        height: 50px;
+        border-bottom: thin solid black;
+      }
+      .content {
+        float: left
+      }
+
+      .text {
+        width: 100px;
+        height: 95px;
+        border: thin solid black;
+        float: left;
+        margin: 5px 0 0 0;
+      }
+
+      .clear {
+        clear: both;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="everything">
+      <div class="node">
+        <div class="trail">
+          <div class="top-half"></div>
+          <div class="bottom-half"></div>
+        </div>
+        <div class="lead">
+          <div class="top-half first"></div>
+          <div class="bottom-half"></div>
+          <div class="top-half"></div>
+          <div class="bottom-half"></div>
+          <div class="top-half"></div>
+          <div class="bottom-half"></div>
+        </div>
+        <div class="content">
+          <div class="text">Hello world</div>
+          <div class="trail">
+            <div class="top-half"></div>
+            <div class="bottom-half"></div>
+          </div>
+          <div class="lead">
+            <div class="top-half first"></div>
+            <div class="bottom-half"></div>
+            <div class="top-half"></div>
+            <div class="bottom-half last"></div>
+          </div>
+          <div class="content">
+            <div class="text clear">Chapter 1</div>
+            <div class="text clear">Chapter 2</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
