@@ -5,13 +5,17 @@ div.n-content {
   width: 99px;
   height: 99px;
   float: left;
+  margin: 5px 0px 0 0px;
 }
 div.n-children {
   float: left;
 }
 div.n-children .n-child {
+  clear: both;
 }
 div.n-children .n-child .n-connector {
+  float: left;
 }
 div.n-children .n-child .n-container {
+  float: left;
 }
