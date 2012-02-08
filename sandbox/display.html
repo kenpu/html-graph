@@ -1,16 +1,15 @@
 <html>
   <head>
-    <style>
-      .x {
-        width: 100px; height: 100px;
-        border: thin solid black;
-        margin: 5px 5px 5px 5px;
-        display: table-cell;
-      }
-    </style>
+    <script src="jquery-1.7.1.min.js"></script>
+    <script src="display.js"></script>
+    <link rel="stylesheet" type="text/css" href="display.css"/>
+    <script>
+    $(function() {
+      $("#boxtree").boxtree();
+    });
+    </script>
   </head>
   <body>
-    <div class="x">Hello world</div>
-    <div class="x">Hello world</div>
+    <div id="boxtree"></div>
   </body>
 </html>
