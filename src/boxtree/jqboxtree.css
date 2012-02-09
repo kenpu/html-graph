@@ -1,6 +1,4 @@
 div.boxtree-node {
-  padding: 10px 10px 10px 10px;
-  border: thin solid black;
   margin: 0px 0px 10px 0px;
   float: left;
 }
@@ -10,7 +8,8 @@ div.boxtree-node.boxtree-root {
 div.boxtree-content {
   float: left;
   width: 100px;
-  background: #eee;
+  color: #555;
+  background: #eef;
   border-radius: 5px;
   padding: 5px 5px 5px 5px;
   text-align: center;

@@ -16,6 +16,19 @@
         y.boxtree('set-content', "Context Free Grammar");
         root.boxtree('connect');
         x.boxtree('connect');
+
+        $(".boxtree-content")
+          .mouseenter(function(e) {
+            $(this).css({
+              '-webkit-transform': 'scale(1.25)',
+              'color' : '#000'
+            });
+          }).mouseleave(function(e) {
+            $(this).css({
+              '-webkit-transform': 'scale(1)',
+              'color' : '#555'
+            });
+          });;
       });
     </script>
     <style>
