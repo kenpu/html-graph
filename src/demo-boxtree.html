@@ -14,8 +14,15 @@
         x.boxtree('add-child').boxtree('set-content', "Automata");
         y = root.boxtree('add-child');
         y.boxtree('set-content', "Context Free Grammar");
+        root.boxtree('connect');
+        x.boxtree('connect');
       });
     </script>
+    <style>
+      #boxtree {
+        margin: 200px 0 0 200px;
+      }
+    </style>
   </head>
   <body>
     <div id="boxtree"></div>

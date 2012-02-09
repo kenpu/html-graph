@@ -1,0 +1,51 @@
+div.boxtree-node {
+  padding: 10px 10px 10px 10px;
+  border: thin solid black;
+  margin: 0px 0px 10px 0px;
+  float: left;
+}
+div.boxtree-node.boxtree-root {
+}
+
+div.boxtree-content {
+  float: left;
+  width: 100px;
+  background: #eee;
+  border-radius: 5px;
+  padding: 5px 5px 5px 5px;
+  text-align: center;
+}
+
+div.boxtree-children {
+  float: left;
+}
+
+div.boxtree-connector {
+  float: left;
+  width: 50px;
+  height: 50px;
+}
+
+div.boxtree-c1 {
+  float: left;
+  width: 24px;
+  border-right: thin solid black;
+}
+div.boxtree-c1.boxtree-first {
+  width: 25px;
+  border-right: none;
+  border-bottom: thin solid black;
+}
+div.boxtree-c2 {
+  float: left;
+  width: 25px;
+  border-bottom: thin solid black;
+}
+div.boxtree-c3 {
+  float: left;
+  width: 24px;
+  border-right: thin solid black;
+}
+div.boxtree-c3.boxtree-last {
+  border-right: none;
+}
