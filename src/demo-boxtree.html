@@ -1,0 +1,23 @@
+<html>
+  <head>
+    <script src="jquery-1.7.1.min.js"></script>
+    <script src="boxtree/jqboxtree.js"></script>
+    <link rel="stylesheet" type="text/css" href="boxtree/jqboxtree.css"/>
+    <script>
+      var root, x, y;
+      $(function() {
+        root = $("#boxtree").boxtree();
+        root.boxtree('set-content', "Compiler and Programming Languages");
+        x = root.boxtree('add-child');
+        x.boxtree('set-content', "Lexical Analysis");
+        x.boxtree('add-child').boxtree('set-content', "Regular Expressions");
+        x.boxtree('add-child').boxtree('set-content', "Automata");
+        y = root.boxtree('add-child');
+        y.boxtree('set-content', "Context Free Grammar");
+      });
+    </script>
+  </head>
+  <body>
+    <div id="boxtree"></div>
+  </body>
+</html>
