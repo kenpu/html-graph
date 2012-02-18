@@ -1,0 +1,52 @@
+<html>
+  <head>
+    <script src="../jquery-1.7.1.min.js"></script>
+    <script src="showdown.js"></script>
+    <script src="highlight/highlight.pack.js"></script>
+    <link rel="stylesheet" href="highlight/styles/default.css"/>
+    <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css"/>
+    <style>
+      div.code { margin-top: 50px; }
+      textarea { width: 100%; height: 300px;
+                 background: #000;
+                 color: #ff0;
+                 font-family: monospace, "Courier New", "Consolas";
+                 font-size: 16px;
+               }
+    </style>
+    <script>
+      hljs.tabReplace = '  ';
+      hljs.initHighlightingOnLoad();
+      var converter = new Showdown.converter();
+      $(function() {
+        $("#markdown").keyup(function(e) {
+          var markdown = $("#markdown").val();
+          var text = converter.makeHtml(markdown);
+          $("#rendered").html(text);
+        });
+      });
+    </script>
+  </head>
+  <body>
+    <div class="row">
+      <div class="span8 offset2 code">
+        <pre>
+          <code class="python">for i in range(10):
+    print "Hello world: %d" % i
+  def sum(x):
+    reduce(lambda x,y:x+y, x, 0)
+  print sum(range(100))</code>
+        </pre>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="span6">
+        <textarea id="markdown"></textarea>
+      </div>
+      <div class="span6">
+        <div id="rendered"></div>
+      </div>
+    </div>
+  </body>
+</html>
