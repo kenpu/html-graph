@@ -13,26 +13,78 @@
                  color: #ff0;
                  font-family: monospace, "Courier New", "Consolas";
                  font-size: 16px;
-     }
-     .equation { text-align: center; padding: 10px 10px 10px 10px; }
+      }
+      .equation { text-align: center; padding: 10px 10px 10px 10px; }
+      .error-msg { color: red; font-size: 20pt; }
+      #rendered {
+        border: thin solid #555;
+      }
+      #rendered, #rendered p { font-family: serif;
+          font-size: 14px;
+          color: blue;
+      }
+      #save {
+        position: absolute;
+        right: 10px;
+        bottom: 20px;
+      }
     </style>
     <script>
+      var toast = function(text) {
+        var y0 = $('body').scrollTop(), x0 = $('body').scrollLeft();
+        var $div = $('<div>').css({
+          position: 'absolute',
+          left: x0 + 100,
+          top: y0 + $(window).height() - 100,
+          width: 400,
+          'border-radius' : 5,
+          background: '#ccc',
+          'text-align': 'center',
+        }).html(text).appendTo('body');
+        $div.fadeTo(0, 0.0, function() {
+          $div.fadeTo(200, 1.0, function() {
+            $div.fadeTo(2000, 0.0, function() {
+              $div.remove();
+            })
+          })
+        });
+      };
       hljs.tabReplace = '  ';
       hljs.initHighlightingOnLoad();
+      var local = window.localStorage;
       var converter = new Showdown.converter();
       $(function() {
         $("#markdown").keyup(function(e) {
           var markdown = $("#markdown").val();
           var text = converter.makeHtml(markdown);
           $("#rendered").html(text);
-          MathJax.Hub.Queue(['Typeset', MathJax.Hub, $("rendered")[0]]);
+          if(MathJax)
+            MathJax.Hub.Queue(['Typeset', MathJax.Hub, $("#rendered")[0]]);
         });
+        if(MathJax) $(".error-msg").hide();
+        $("#save").click(function() {
+          if(local == null) return;
+          var markdown = $("#markdown").val();
+          local.setItem("colossal", markdown);
+          toast("Saved the content");
+        });
+        if(local) {
+          var markdown = local.getItem("colossal");
+          $("#markdown").val(markdown);
+          $("#rendered").html(converter.makeHtml(markdown));
+          toast("Loaded the content");
+        }
       });
     </script>
   </head>
   <body>
+    <div class="row error-msg">
+      <div class="span8 offset4">
+        Oh no, MathJax is not installed.  You need MathJax.
+      </div>
+    </div>
     <div class="row">
-      <div class="span8 offset2 code">
+      <div class="span6 code">
         <pre>
           <code class="python">for i in range(10):
     print "Hello world: %d" % i
@@ -41,16 +93,20 @@
   print sum(range(100))</code>
         </pre>
       </div>
-    </div>
-
-    <div class="row">
-      <div class="span12 equation">
+      <div class="span6 equation">
         m[
           \left[\sum_{i=0}^N\int_{-\infty}^\infty dx f_i(x)\right] = \Omega
         ]m
       </div>
+
+    </div>
+
+    <div class="row">
       <div class="span6">
-        <textarea id="markdown"></textarea>
+        <div style="position: relative">
+          <textarea id="markdown"></textarea>
+          <div class="btn" id="save">Save</div>
+        </div>
       </div>
       <div class="span6">
         <div id="rendered"></div>
