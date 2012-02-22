@@ -1,0 +1,43 @@
+<html>
+  <head>
+    <script src="../jquery-1.7.1.min.js"></script>
+    <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        inlineMath: [ ['$', '$'], ['m[', ']m'] ],
+        displayMath: [ ['$$', '$$'], ['M[', ']M'] ]
+      }
+    });
+    </script>
+    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"> </script>
+    <style>
+      body {
+        font-family: serif;
+      }
+      .equation {
+        padding: 10px 10px 10px 10px;
+        background: #ffd;
+        border-radius: 5px;
+        width: 400px;
+        margin-left: 100px;
+      }
+      p {
+        margin: 100px 0 20px 100px;
+        width: 400px;
+      }
+    </style>
+  </head>
+
+  <body>
+    <p>MathJax will be the central show piece of the <em>Ed</em>.
+    It provides beautiful mathematical type setting of
+    $\frac{1}{2}$.  Tags can be used to produce inline mathematics like:
+    m[\int_0^\infty e^{-x} dx = 1]m
+    </p>
+    
+    <div class="equation">
+      M[\sum_i a^i = \frac{1}{1-a}]M
+      M[m_1v_1(t) = m_2 v_ 2(t)]M
+    </div>
+  </body>
+</html>
