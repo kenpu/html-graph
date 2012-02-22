@@ -1,0 +1,26 @@
+<html>
+  <head>
+    <script src="../jquery-1.7.1.min.js"></script>
+    <script>
+    var chwin;
+    $(function() {
+      chwin = window.open("popup.html", 
+                          "_blank",
+                          "width=400,height=200,left=800,top=600");
+      window.onmessage = function(m) {
+        $("#win2").append(m.data + "<br/>");
+      };
+
+      $("button").click(function() {
+        chwin.postMessage("From parent...", "*");
+      });
+    });
+    </script>
+    <style>
+    </style>
+  </head>
+  <body>
+    <div id="win2"></div>
+    <p> This is a parent.  <button>Send</button></p>
+  </body>
+</html>

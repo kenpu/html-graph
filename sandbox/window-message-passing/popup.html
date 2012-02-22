@@ -1,0 +1,30 @@
+<html>
+  <head>
+    <script src="../jquery-1.7.1.min.js"></script>
+    <script>
+    var other;
+    $(function() {
+      window.onmessage = function(m) {
+        $("#message").append(m.data + "<br/>");
+        console.debug(m);
+        m.source.postMessage("Echo back from child.", "*");
+        other = m.source;
+      };
+
+      $("button").click(function() {
+        other.postMessage("From child", "*");
+      });
+    });
+    </script>
+    <style>
+    </style>
+  </head>
+  <body>
+    <div id="message"></div>
+
+    <p>
+    This is the child.
+    <button>Send</button>
+    </p>
+  </body>
+</html>

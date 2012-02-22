@@ -1,0 +1,52 @@
+<html>
+  <head>
+    <script src="../webfont.js"></script>
+    <style>
+      .node {
+        font-family: "Ubuntu Mono", sans-serif;
+      }
+      .children {
+        border-left: 8px solid #555;
+        padding-left: 5px;
+      }
+      .children .children {
+        border-left: 8px solid #aaa;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="root node">
+      <div class="content">
+        Hello world
+      </div>
+      <div class="children">
+        <div class="child">
+          <div class="lead"></div>
+          <div class="node">
+            There is a great wall
+            <div class="children">
+              <div class="child">
+                <div class="lead"></div>
+                <div class="node">The long wall.."</div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+        <div class="child">
+          <div class="lead"></div>
+          <div class="node">
+            <div class="content">It is in North China.</div>
+            <div class="children">
+              <div class="child">
+                <div class="lead"></div>
+                <div class="node">The long wall.."</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+  </body>
+</html>
