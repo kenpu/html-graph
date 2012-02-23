@@ -1,0 +1,37 @@
+<html>
+  <head>
+    <link href='http://fonts.googleapis.com/css?family=Kotta+One' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="divtree.css"/>
+    <link rel="stylesheet" href="edit.css"/>
+    <script src="../jquery-1.7.1.min.js"></script>
+    <script src="kenpu.js"></script>
+    <script src="divtree.js"></script>
+    <script src="edit.js"></script>
+    <script>
+      $(document).ready(function() {
+        var n = make_node("#blocks");
+        get_content(n).html("Node top level 1");
+        var n1 = make_node(n);
+        var n2 = make_node(n);
+        var n3 = make_node(n1);
+        var n4 = make_node(n1);
+        set_content(n1, "Calculus", "This course is not easy.");
+        set_content(n2, "Mechanics", "This course even harder.");
+        set_content(n3, "Differentiation", "Taking the slope of things");
+        set_content(n4, "Integration", "Finding the area of things");
+        //set_debug(n, true);
+        set_style(n, "indented");
+        set_callbacks(n);
+        $("body").click(function() {
+          $(".node").each(function(i,e) {
+            deactivate_node($(e));
+          });
+        });
+      });
+    </script>
+  </head>
+
+  <body>
+    <div id="blocks"></div>
+  </body>
+</html>

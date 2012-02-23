@@ -1,7 +1,15 @@
 <html>
   <head>
     <script src="../jquery-1.7.1.min.js"></script>
-    <script src="MathJax/MathJax.js?config=default"></script>
+    <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        inlineMath: [ ['$', '$'], ['m[', ']m'] ],
+        displayMath: [ ['$$', '$$'], ['M[', ']M'] ]
+      }
+    });
+    </script>
+    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"> </script>
     <script src="showdown.js"></script>
     <script src="highlight/highlight.pack.js"></script>
     <link rel="stylesheet" href="highlight/styles/default.css"/>
@@ -27,6 +35,9 @@
         position: absolute;
         right: 10px;
         bottom: 20px;
+      }
+      div.video {
+        display: none;
       }
     </style>
     <script>
@@ -98,7 +109,6 @@
           \left[\sum_{i=0}^N\int_{-\infty}^\infty dx f_i(x)\right] = \Omega
         ]m
       </div>
-
     </div>
 
     <div class="row">
@@ -111,6 +121,11 @@
       <div class="span6">
         <div id="rendered"></div>
       </div>
+    </div>
+    <div class="video">
+      <video width="800" height="600" controls="controls">
+        <source src="out.ogv"/>
+      </video>
     </div>
   </body>
 </html>

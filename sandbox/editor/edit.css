@@ -1,0 +1,31 @@
+.content {
+  margin: 15px 15px 15px 15px;
+  font-family: sans-serif;
+  font-size: 14pt;
+  background: #fff;
+  -webkit-user-select: none;
+  -webkit-transform: scale(1);
+  -webkit-transition: all 1s ease 0s;
+}
+.child .node.activate > .content {
+  -webkit-transform: scale(1.2);
+  -webkit-transition: all 1s ease 0s;
+  box-shadow: 10px 10px 5px #888;
+}
+.child .node.activate .children {
+  border-color: #f00;
+}
+.child .node.closed > .content {
+  box-shadow: 10px 10px 5px #ffa;
+}
+.content .name { 
+  font-family: sans-serif;
+  font-size: 16pt;
+  font-weight: bold;
+}
+.content .description {
+  font-family: "Kotta One";
+  font-size: 12pt;
+}
+.content .name input {}
+.content .description textarea {}
