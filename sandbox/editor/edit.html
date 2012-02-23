@@ -1,5 +1,14 @@
 <html>
   <head>
+    <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        inlineMath: [ ['$', '$'], ['m[', ']m'] ],
+        displayMath: [ ['$$', '$$'], ['M[', ']M'] ]
+      }
+    });
+    </script>
+    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"> </script>
     <link href='http://fonts.googleapis.com/css?family=Kotta+One' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" href="divtree.css"/>
     <link rel="stylesheet" href="edit.css"/>
@@ -7,10 +16,14 @@
     <script src="kenpu.js"></script>
     <script src="divtree.js"></script>
     <script src="edit.js"></script>
+    <style>
+      #blocks {
+        margin-left: 50px;
+      }
+    </style>
     <script>
       $(document).ready(function() {
         var n = make_node("#blocks");
-        get_content(n).html("Node top level 1");
         var n1 = make_node(n);
         var n2 = make_node(n);
         var n3 = make_node(n1);
