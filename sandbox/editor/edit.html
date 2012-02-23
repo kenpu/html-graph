@@ -13,6 +13,8 @@
     <link rel="stylesheet" href="divtree.css"/>
     <link rel="stylesheet" href="edit.css"/>
     <script src="../jquery-1.7.1.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js"></script>
+    <link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.7.0/themes/base/jquery-ui.css"/>
     <script src="kenpu.js"></script>
     <script src="divtree.js"></script>
     <script src="edit.js"></script>
@@ -32,13 +34,10 @@
         set_content(n2, "Mechanics", "This course even harder.");
         set_content(n3, "Differentiation", "Taking the slope of things");
         set_content(n4, "Integration", "Finding the area of things");
-        //set_debug(n, true);
         set_style(n, "indented");
         set_callbacks(n);
         $("body").click(function() {
-          $(".node").each(function(i,e) {
-            deactivate_node($(e));
-          });
+          exit_focus();
         });
       });
     </script>

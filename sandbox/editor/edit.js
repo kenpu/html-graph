@@ -1,5 +1,10 @@
+function get_name($n) {
+  var $c = get_content($n);
+  return $(".name", $c).text();
+}
+
 function add_control($node) {
-  var $content = $node.find(".content:first");
+  var $content = get_content($node);
   var $control = _div_(".control").append(
         _span_(".add", 'Add'),
         _span_(".remove", 'Remove'),
@@ -10,13 +15,6 @@ function add_control($node) {
   $content.append($control);
   return $control;
 }
-function add_collapse($n) {
-  var $bullet = get_bullet($n);
-  if($bullet.size() > 0) {
-    $bullet.append(_div_(".collapse").append(_span_(".open", "-")));
-  }
-  return $bullet.children(".collapse");
-}
 
 function get_control($node) {
   return $(".control", get_content($node));
@@ -24,8 +22,8 @@ function get_control($node) {
 
 function set_content($n, name, desc) {
   var $content = get_content($n);
-  var $name = _div_(".name").append(name);
-  var $desc = _div_(".description").empty().append(desc);
+  var $name    = _div_(".name").append(name);
+  var $desc    = _div_(".description").empty().append(desc);
   var $name_ed = _div_(".name-edit").hide()
                  .append($("<input>"));
   var $desc_ed = _div_(".description-edit").hide()
@@ -43,12 +41,12 @@ function set_callbacks($root) {
    */
   $root.on('click', '.node > .content', function(ev) {
     $n = $(this).closest(".node");
-    var activate = $n.hasClass("activate");
-    deactivate_node();
-    if(activate)
-      deactivate_node($n);
+    var focused = $n.hasClass("focus-mode");
+    exit_focus();
+    if(focused)
+      exit_focus($n);
     else
-      activate_node($n);
+      enter_focus($n);
     ev.preventDefault();
     ev.stopPropagation();
   });
@@ -57,7 +55,7 @@ function set_callbacks($root) {
    * Control callbacks
    */
   $root.on('click', '.control .add', function(ev) {
-    deactivate_node();
+    exit_focus();
     var $n = $(this).closest('.node');
     var $m = make_node($n);
     set_content($m, "Node name", "Node description goes here.");
@@ -65,13 +63,13 @@ function set_callbacks($root) {
     ev.preventDefault();
   });
   $root.on('click', '.control .remove', function(ev) {
-    deactivate_node();
+    exit_focus();
     $(this).closest('.child').remove();
     ev.stopPropagation();
     ev.preventDefault();
   });
   $root.on('click', '.control .open', function(ev) {
-    deactivate_node();
+    exit_focus();
     var $n = $(this).closest('.node');
     $n.toggleClass("closed");
     $chlist = get_child($n);
@@ -87,7 +85,7 @@ function set_callbacks($root) {
   });
   $root.on('click', '.control .edit', function(ev) {
     var $n = $(this).closest('.node');
-    edit_node($n);
+    enter_edit($n);
     ev.stopPropagation();
     ev.preventDefault();
   });
@@ -95,26 +93,32 @@ function set_callbacks($root) {
     ev.stopPropagation();
     ev.preventDefault();
   });
+  $root.on('click', '.control .author', function(ev) {
+    var $n = $(this).closest('.node');
+    launch_author($n);
+    ev.stopPropagation();
+    ev.preventDefault();
+  });
 }
 
-function activate_node($n) {
-  $n.addClass("activate");
+function enter_focus($n) {
+  $n.addClass("focus-mode");
   get_control($n).fadeIn();
 }
-function deactivate_node($n) {
+function exit_focus($n) {
   if($n == null) {
-    $(".node.activate").each(function(i, e) {
-      deactivate_node($(e));
+    $(".node.focus-mode").each(function(i, e) {
+      exit_focus($(e));
     });
   } else {
-    save_node($n);
-    $n.removeClass("activate");
+    exit_edit($n);
+    $n.removeClass("focus-mode");
     get_control($n).fadeOut();
   }
 }
 
-function edit_node($n) {
-  $n.addClass("edited");
+function enter_edit($n) {
+  $n.addClass("edit-mode");
   var $content = get_content($n);
   var $n = $content.find(".name").hide();
   var $d = $content.find(".description").hide();
@@ -124,9 +128,9 @@ function edit_node($n) {
   $de.find("textarea").val($d.html());
 }
 
-function save_node($n) {
-  if($n.hasClass("edited")) {
-    $n.removeClass("edited");
+function exit_edit($n) {
+  if($n.hasClass("edit-mode")) {
+    $n.removeClass("edit-mode");
     var $content = get_content($n);
     var $ne = $content.find(".name-edit").hide();
     var $de = $content.find(".description-edit").hide();
@@ -138,4 +142,20 @@ function save_node($n) {
       MathJax.Hub.Queue(['Typeset', MathJax.Hub, $d[0]]);
     }
   }
+}
+
+function launch_author($n) {
+  if($n.hasClass("author-mode")) {
+    return;
+  }
+
+  $author = _div_(".authoring").attr('title', get_name($n)).append(
+    $('<textarea>').addClass("markdown"),
+    $('<textarea>').addClass("style"),
+    $('<div>').css({clear: 'both'}),
+  );
+  $('body').append($author);
+  $author.dialog({
+    minWidth: 800
+  });
 }

@@ -7,12 +7,15 @@
   -webkit-transform: scale(1);
   -webkit-transition: all 1s ease 0s;
 }
-.child .node.activate > .content {
+.children {
+  margin-left: 20px;
+}
+.child .node.focus-mode > .content {
   -webkit-transform: scale(1.2);
   -webkit-transition: all 1s ease 0s;
   box-shadow: 10px 10px 5px #888;
 }
-.child .node.activate .children {
+.child .node.focus-mode .children {
   border-color: #f00;
 }
 .child .node.closed > .content {
@@ -42,4 +45,20 @@
   font-size: 8px;
   font-family: sans-serif;
   font-weight: bold;
+}
+
+/* Experimental Styling */
+
+div.authoring textarea {
+  float: left;
+  width: 300px;
+  font-size: 9pt;
+  font-family: monospace, "Courier New";
+  padding: 5px 5px 5px 5px;
+  border: none;
+  background: #000;
+  color: #ff0;
+}
+div.authoring textarea.markdown {
+  margin-right: 10px;
 }
