@@ -1,29 +1,67 @@
-.debug {
-  margin: 2px 2px 2px 2px;
-  padding: 2px 2px 2px 2px;
-  border: thin solid #000;
-  min-width: 20px;
-  min-height: 8px;
-}
-.node.debug     { border: thin solid #000; }
-.content.debug  { border: thin solid #0ff; }
-.children.debug { border: thin solid #00f; }
-.child.debug    { border: thin solid #f00; }
-.bullet.debug   { border: thin solid #f0f; }
-
-.indented-tree .node    { position: relative;}
-.indented-tree .content { min-width: 50px;
-                          min-height: 30px;
-                        }
 .content > .control     { width: 100%;
                           text-align: right;
                         }
-.control > span         { margin-right: 5px;
-                          padding: 5px 5px 5px 5px;
+.br                     { clear:both; }
+
+/******************************************************************
+ * Box Tree CSS
+ ******************************************************************/
+
+.box-tree .child > .node {
+  margin: 0px 0px 10px 0px;
+  float: left
+}
+.box-tree .content {
+  float: left;
+  width: 100px;
+  color: #555;
+  border-radius: 5px;
+  padding: 5px 5px 5px 5px;
+}
+.box-tree .children {
+  float: left;
+}
+.box-tree .bullet {
+  float: left;
+  width: 50px;
+  height: 50px;
+}
+.box-tree .bullet .boxtree1 {
+  float: left;
+  width: 24px;
+  border-right: 1px solid black;
+}
+.box-tree .bullet .boxtree1.boxtree-first {
+  width: 25px;
+  border-right: none;
+  border-bottom: 1px solid black;
+}
+.box-tree .bullet .boxtree2 {
+  float: left;
+  width: 25px;
+  border-bottom: 1px solid black;
+}
+.box-tree .bullet .boxtree3 {
+  float: left;
+  width: 24px;
+  border-right: 1px solid black;
+}
+.box-tree .bullet .boxtree3.boxtree-last {
+  border-right: none;
+}
+
+/*******************************************************************
+ * Indented Tree
+ *******************************************************************/
+.indented-tree .node    { position: relative;}
+.indented-tree .content { min-width: 50px;
+                          min-height: 30px;
+                          float: none;
                         }
 .indented-tree .children{ padding-left: 5px;
                           border-left: 10px solid #aaa;
+                          float: none;
                         }
 .indented-tree .child .bullet  { float:left; width: 4px; height: 4px;}
 .indented-tree .child .node    { float:left; }
-.indented-tree .child .br      { clear:both; }
+.indented-tree .bullet > div   { display: none; }

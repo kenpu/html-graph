@@ -1,19 +1,24 @@
+/* JQuery UI font */
+
+.ui-widget { font-size: 12px; }
+
+
+/* Edit Tree */
+
 .content {
-  margin: 15px 15px 15px 15px;
   font-family: sans-serif;
   font-size: 14pt;
   background: #fff;
   -webkit-user-select: none;
   -webkit-transform: scale(1);
-  -webkit-transition: all 1s ease 0s;
-}
-.children {
-  margin-left: 20px;
 }
 .child .node.focus-mode > .content {
-  -webkit-transform: scale(1.2);
-  -webkit-transition: all 1s ease 0s;
+  -webkit-transform: scale(1.1);
   box-shadow: 10px 10px 5px #888;
+  background: #ffe;
+}
+.child .node.edit-mode > .content {
+  -webkit-transform: scale(1);
 }
 .child .node.focus-mode .children {
   border-color: #f00;
@@ -42,23 +47,54 @@
   background: #555;
   color: #fff;
   border-radius: 5px;
-  font-size: 8px;
+  font-size: 10px;
   font-family: sans-serif;
   font-weight: bold;
+  padding: 5px;
 }
 
-/* Experimental Styling */
+/* Tree layouts */
+.indented-tree .content { margin: 15px 15px 15px 15px; }
+.box-tree      .content { margin: 0 0 0 0; 
+                          min-width: 200px;
+                        }
+.indented-tree .children { margin-left: 20px; }
+.box-tree      .children { margin: 0 0 0 0; }
+
 
 div.authoring textarea {
-  float: left;
-  width: 300px;
+  width: 350px;
+  height: 500px;
   font-size: 9pt;
   font-family: monospace, "Courier New";
   padding: 5px 5px 5px 5px;
   border: none;
-  background: #000;
-  color: #ff0;
 }
 div.authoring textarea.markdown {
   margin-right: 10px;
+  background: #000;
+  color: #ff0;
+}
+div.authoring textarea.styling {
+  background: #330;
+  color: #fff;
+}
+
+.name-edit {
+  margin-bottom: 5px;
+}
+.name-edit input {
+  width: 100%;
+  border: thin solid blue;
+  color: #00f;
+  font-family: monospace, "Courier New";
+  font-weight: bold;
+  font-size: 11pt;
+}
+.description-edit textarea {
+  width: 200px;
+  height: 50px;
+  color: #333;
+  font-family: monospace, "Courier New";
+  font-size: 9t;
 }

@@ -59,12 +59,14 @@ function set_callbacks($root) {
     var $n = $(this).closest('.node');
     var $m = make_node($n);
     set_content($m, "Node name", "Node description goes here.");
+    refresh_style($n);
     ev.stopPropagation();
     ev.preventDefault();
   });
   $root.on('click', '.control .remove', function(ev) {
     exit_focus();
     $(this).closest('.child').remove();
+    refresh_style($n);
     ev.stopPropagation();
     ev.preventDefault();
   });
@@ -74,12 +76,13 @@ function set_callbacks($root) {
     $n.toggleClass("closed");
     $chlist = get_child($n);
     if($n.hasClass("closed")) {
-      $chlist.hide('slow');
+      $chlist.hide(); // slow
       $(this).html('Open');
     } else {
-      $chlist.show('slow');
+      $chlist.show(); // slow
       $(this).html('Close');
     }
+    refresh_style($n);
     ev.stopPropagation();
     ev.preventDefault();
   });
@@ -102,9 +105,11 @@ function set_callbacks($root) {
 }
 
 function enter_focus($n) {
+  get_content($n).css({'-webkit-transition': 'all 300ms ease 0s'});
   $n.addClass("focus-mode");
   get_control($n).fadeIn();
 }
+
 function exit_focus($n) {
   if($n == null) {
     $(".node.focus-mode").each(function(i, e) {
@@ -113,7 +118,7 @@ function exit_focus($n) {
   } else {
     exit_edit($n);
     $n.removeClass("focus-mode");
-    get_control($n).fadeOut();
+    get_control($n).hide();
   }
 }
 
@@ -138,9 +143,7 @@ function exit_edit($n) {
     var $d = $content.find(".description").show();
     $n.text($ne.find("input").val());
     $d.html($de.find("textarea").val());
-    if(MathJax != null) {
-      MathJax.Hub.Queue(['Typeset', MathJax.Hub, $d[0]]);
-    }
+    MathJax.Hub.Queue(['Typeset', MathJax.Hub, $d[0]]);
   }
 }
 
@@ -149,13 +152,27 @@ function launch_author($n) {
     return;
   }
 
+  $textareas = _div_().append(
+    $("<h3>").html('<a href="#">Markdown</a>'),
+    _div_().append($('<textarea>').addClass("markdown")),
+    $("<h3>").html('<a href="#">Styling</a>'),
+    _div_().append($('<textarea>').addClass("styling"))
+  );
   $author = _div_(".authoring").attr('title', get_name($n)).append(
-    $('<textarea>').addClass("markdown"),
-    $('<textarea>').addClass("style"),
-    $('<div>').css({clear: 'both'}),
+    $textareas
   );
   $('body').append($author);
+  $textareas.accordion();
   $author.dialog({
-    minWidth: 800
+    minWidth: 450,
+    position: 'center',
+    buttons: { "Save": function() {
+                         $(this).dialog('close');
+                         exit_focus();
+                       } 
+             }
   });
+  $(".ui-dialog")
+    .css("opacity", 0.8)
+    .click(function(e) {e.stopPropagation();});
 }

@@ -21,7 +21,8 @@ function make_node(parent) {
   var $node = _div_(".node");
   $node.append(
     _div_(".content"),
-    _div_(".children")
+    _div_(".children"),
+    _div_(".br")
   );
   if(parent != null) {
     var $p = $(parent);
@@ -53,10 +54,62 @@ function get_content($node) {
   return $node.children(".content");
 }
 
-function set_style(node, style) {
-  if(style == 'indented') {
-    $(node).addClass("indented-tree");
-  } else if(style == 'debug') {
-    $(DIVTREE_SELECTOR, node).addClass("debug");
+function get_parent_node($n) {
+  return $n.parents(".node");
+}
+
+function get_root_node($n) {
+  var $p = get_parent_node($n);
+  if($p.size() > 0)
+    return get_root_node($p);
+  else
+    return $n;
+}
+
+function set_indented_style(root) {
+  $(root).addClass("indented-tree");
+}
+
+function traverse_nodes($n, f) {
+  f($n);
+  get_child_nodes($n).each(function(i, m) {
+    traverse_nodes($(m), f);
+  });
+}
+function boxtree($n) {
+    var $chlist = get_child($n);
+    var n = $chlist.size();
+    var $content = get_content($n);
+    // var h0 = $content.outerHeight() - $content.height();
+    var h0 = $content.outerHeight() / 2;
+    $chlist.each(function(i, ch) {
+      var $ch = $(ch);
+      var $bullet = $(".bullet", $ch);
+      var h = $ch.outerHeight();
+      var h1 = h - h0;
+      var $d1 = _div_(".boxtree1").css("height", h0);
+      var $d2 = _div_(".boxtree2").css("height", h0);
+      var $d3 = _div_(".boxtree3").css("height", h1);
+      if(i==0)
+        $.each([$d1,$d2,$d3], function(i, e) {
+          e.addClass("boxtree-first");
+        });
+      if(i==n-1)
+        $.each([$d1,$d2,$d3], function(i, e) {
+          e.addClass("boxtree-last");
+        });
+      $bullet.empty().append($d1, $d2, _div_(".br"), $d3, _div_(".br"));
+    });
+  };
+
+function set_boxtree_style($root) {
+  $root.removeClass("indented-tree").addClass("box-tree");
+  traverse_nodes($root, boxtree);
+}
+
+function refresh_style($n) {
+  var $root = get_root_node($n);
+  if($root.hasClass("box-tree")) {
+    set_boxtree_style($root);
   }
 }
