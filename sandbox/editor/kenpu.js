@@ -15,3 +15,7 @@ function _span_(label, html) {
 function _div_(label, html) {
   return _haml_('div', label, html);
 }
+
+function __id__(name) {
+  return name.replace(" ", "_");
+}
