@@ -10,7 +10,8 @@
     </script>
     <script type="text/javascript" src="lib/MathJax-1.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"> </script>
 
-    <link href='http://fonts.googleapis.com/css?family=Kotta+One' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Kotta+One'
+    rel='stylesheet' type='text/css'/>
     <script src="lib/jquery-1.7.1.min.js"></script>
     <script src="lib/jquery-ui-1.8.18.custom.min.js"></script>
     <link rel="stylesheet" href="lib/jquery-ui-1.8.18.custom.css"/>
@@ -29,30 +30,20 @@
       }
     </style>
     <script>
+      var nodes = {
+        "Compiler" : {
+          name: "Compiler",
+          description: "This course studies algorithms " + 
+                       "on compiler construction.",
+          markdown: null,
+          style: null,
+          children: []
+        }
+      };
+
       $(document).ready(function() {
-        var n = make_node("#blocks");
-        var n1 = make_node(n);
-        var n2 = make_node(n);
-        var n3 = make_node(n1);
-        var n4 = make_node(n1);
-        save_node(n, {name: "Ken's courses"});
-        save_node(n1, { name: "Calculus", 
-                        description: "This course is not easy."});
-        save_node(n2, { name: "Mechanics", 
-                        description: "This course even harder."});
-        save_node(n3, { name: "Differentiation", 
-                        description: "Taking the slope of things"});
-        save_node(n4, { name: "Integration", 
-                        description: "Finding the area of things"});
-        set_callbacks(n);
-        /*
-        set_indented_style(n3);
-        set_boxtree_style(n);
-        */
-        set_indented_style(n);
-        $(".children", n).sortable({
-          handle: ".block"
-        });
+        MyStorage = nodes;
+        make_tree($("#blocks"), "Compiler");
       });
     </script>
   </head>

@@ -1,3 +1,61 @@
+/* Storage */
+var MyStorage;
+
+function NodeID($n) {
+  if(typeof($n) == 'string')
+    return $n
+  else
+    return $n.attr('id');
+}
+
+function Del($n, $p) {
+  var nid = NodeID($n);
+  Set($p, "children", function(c) {
+    var found = -1;
+    for(var i=0; i < c.length; i++)
+      if(c[i] == nid) {
+        found = i;
+        break;
+      }
+    if(found >= 0)
+      c.splice(found, 1);
+  });
+}
+
+function Get($n, prop) {
+  var info = MyStorage[NodeID($n)];
+  if(! info)
+    return undefined;
+  else
+    return info[prop];
+}
+
+function Set($n, prop, val) {
+  var id = NodeID($n);
+  var info = MyStorage[id];
+  if(! info)
+    MyStorage[id] = info = {
+      name: null, 
+      description: null, 
+      markdown: null,
+      style: null,
+      children: []
+    };
+
+  if(typeof(val) == 'function') {
+    val(info[prop]);
+  } else {
+    info[prop] = val;
+  }
+}
+
+function Data($n, prop, val) {
+  if(val === undefined)
+    return Get($n, prop);
+  else
+    return Set($n, prop, val);
+}
+
 function get_name($n) {
   var $c = get_content($n);
   return $(".name", $c).text();
@@ -15,6 +73,11 @@ function add_control($node) {
   var $control2 = _div_(".control").append(
         _span_(".save", "Save"),
         _span_(".cancel", "Cancel"));
+
+  // If $node is a root, then remove the Remove button
+  if(! $node.closest(".child"))
+    $(".remove", $control).remove();
+  
   $content.append($control, $control2);
   return $control.add($control2);
 }
@@ -53,21 +116,29 @@ function save_node($n, o) {
   // Modify the node data and its HTML content
   //
   if(o.name) {
-    $n.data('name', o.name);
     $n.attr('id', __id__(o.name));
     $c.find(".name").html(o.name);
+    Data($n, "name", o.name);
   }
   if(o.description !== undefined) {
-    $n.data('description', o.description);
     var $d = $c.find(".description").html(o.description);
     MathJax.Hub.Queue(['Typeset', MathJax.Hub, $d[0]]);
+    Data($n, "description", o.description);
   }
   if(o.markdown !== undefined) {
-    $n.data('markdown', o.markdown);
+    Data($n, "markdown", o.markdown);
   }
   if(o.style !== undefined) {
-    $n.data('style', o.style);
+    Data($n, "style", o.style);
   }
+
+  // Link to a parent
+  if(o.parent !== undefined) {
+    Set(o.parent, "children", function(c) {
+      c.push(NodeID($n));
+    });
+  }
+
   return $n;
 }
 
@@ -101,7 +172,7 @@ function set_callbacks($root) {
         alert('"' + name + '" is already used.');
       } else {
         var $m = make_node($n);
-        save_node($m, {name: name});
+        save_node($m, {name: name, parent: $n});
         $m.trigger('refresh'); // TODO: to be implemented
       }
     });
@@ -110,12 +181,13 @@ function set_callbacks($root) {
   });
   $root.on('click', '.control .remove', function(ev) {
     exit_focus();
-    apprise('"' + $n.data('name') + '" is about to be removed.',
+    apprise('"' + Data($n, 'name') + '" is about to be removed.',
       {confirm: true},
       function(reply) {
         if(reply) {
           var $p = get_parent_node($n);
           $n.closest('.child').remove();
+          Del($n, $p);
           $p.trigger('refresh');
         }
       });
@@ -193,8 +265,8 @@ function enter_edit($n) {
   $content.find(".control").hide();
   var $ne = $content.find(".name-edit").show();
   var $de = $content.find(".description-edit").show();
-  $ne.find("input").val($n.data('name'));
-  $de.find("textarea").val($n.data('description'));
+  $ne.find("input").val(Data($n, 'name'));
+  $de.find("textarea").val(Data($n, 'description'));
   get_control($n, ":first").hide();
   get_control($n, ":last").show();
 }
@@ -245,3 +317,26 @@ function launch_author($n) {
     .css("opacity", 0.8)
     .click(function(e) {e.stopPropagation();});
 }
+
+function make_tree($div, root_id) {
+  var mk_n = function(n_id, $p) {
+    var info = MyStorage[n_id];
+    var $n = make_node($p);
+    save_node($n, info);
+    if(info.children && info.children.length)
+      $.each(info.children, function(i, c_id) {
+        mk_n(c_id, $n);
+      });
+    return $n;
+  };
+
+  var $root = mk_n(root_id, $div);
+  set_callbacks($root);
+  set_indented_style($root);
+  $(".children", $root).sortable({
+    handle: ".block"
+  });
+
+  return $root;
+}
+
