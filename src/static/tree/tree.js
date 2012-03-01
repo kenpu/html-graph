@@ -6,6 +6,7 @@
  *      .children
  *          .node+
  */
+
 (function($) {
   /*
   * o.parent: DOM
@@ -33,6 +34,8 @@
         $p.append($n);
       }
     }
+
+    // Create a model for the node
     $n.trigger("node-created", [$n]);
     $p.trigger("subtree-changed");
     return $n

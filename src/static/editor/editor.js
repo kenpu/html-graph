@@ -28,16 +28,29 @@ var ConceptModel = Backbone.Model.extend({
   defaults: function() {
     return {
       name: "",
-      order: 0
+      desc: "",
+      content: "",
+      meta: {},
+      style: {}
+      order: 0,
+      parent: null
     };
   }
 });
 
+var ConceptMapModel = Backbone.Collection.extend({
+  model: ConceptModel
+});
+
 (function($) {
-  $.fn.E_MakeContainer = function() {
-    $container = $(this).find(".container:first");
+  /* Initializes the editor nodes */
+  $.fn.E_Initialize = function() {
+    var model = new ConceptModel();
+    $(this).data('model', model);
+    var $container = $(this).find(".container:first");
     $container.append(
-      $("<button>").html("Save")
+      $('<div>').addClass("name display"),
+      $('<div>').addClass("name display"),
     );
   };
 })(jQuery);
@@ -48,7 +61,7 @@ $(function() {
       $(this).T_Node().T_ToggleCollapse();
     })
     .on("node-created", ".node", function(e) {
-      $(this).E_MakeContainer();
+      $(this).E_Initialize();
       return false;
     });
   var $root = $.T_MakeTree({
