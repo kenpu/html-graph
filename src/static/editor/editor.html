@@ -1,0 +1,52 @@
+<html>
+  <head>
+    <script src="../lib/jquery-1.7.1.min.js"></script>
+    <script src="../lib/jquery-ui-1.8.18.custom.min.js"></script>
+    <link rel="stylesheet" href="../lib/jquery-ui-1.8.18.custom.css"/>
+    <script src="../lib/underscore-1.3.1.js"></script>
+    <script src="../lib/backbone-min.js"></script>
+    <script src="../tree/tree.js"></script>
+    <link rel="stylesheet" href="../tree/tree.css"/>
+    <link rel="stylesheet" href="editor.css"/>
+    <script src="editor.js"></script>
+    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Kotta+One"/>
+    <style>
+      table {
+        height: 100%;
+      }
+      .ui-split div.ui-pane {
+        height: 100%;
+        padding: 0px 10px 0px 10px;
+      }
+      .ui-resizable-handle.ui-resizable-e {
+        width: 14px;
+        height: 100%;
+        background: #777;
+      }
+    </style>
+    <script>
+      $(function() {
+        $(".ui-split div:first").resizable({
+          handles: "e",
+          minWidth: 200
+        });
+      });
+    </script>
+  </head>
+
+  <body>
+    <h1>Teaching</h1>
+    <div id="editor">
+      <table>
+        <tr>
+          <td class="ui-split">
+            <div id="concept-tree" class="ui-pane"></div>
+          </td>
+          <td class="ui-split">
+            <div id="concept-content" class="ui-pane"></div>
+          </td>
+        </tr>
+      </table>
+    </div>
+  </body>
+</html>

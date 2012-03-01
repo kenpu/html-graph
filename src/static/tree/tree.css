@@ -1,0 +1,14 @@
+.indented .node .children {
+  padding-left: 10px;
+  margin-left: 5px;
+}
+.indented .children {
+  border-left: 10px solid black;
+}
+.indented .bullet {
+  float: left;
+  vertical-align: middle;
+}
+.node.collapsed .container {
+  text-decoration: underline;
+}
