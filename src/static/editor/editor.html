@@ -18,6 +18,19 @@
           handles: "e",
           minWidth: 200
         });
+        $("#node-edit-dialog").dialog({
+          autoOpen: false,
+          modal: true,
+          buttons: {
+            'Okay': function() {
+              $(this).data('node').Save();
+              $(this).dialog('close');
+            },
+            'Cancel': function() {
+              $(this).dialog('close');
+            }
+          }
+        });
       });
     </script>
   </head>
@@ -37,29 +50,32 @@
       </table>
     </div>
 
+    <div id="node-edit-dialog">
+      <input type="text"></input>
+      <textarea></textarea>
+    </div>
+
     <script type="text/template" id="container-template">
       <div class="main">
         <div class="name">
           <span class="display"><%= name %></span>
-          <input class="edit" type="text"></input>
         </div>
         <div class="desc">
           <p class="display"><%= desc %></p>
-          <textarea class="edit"></textarea>
         </div>
-      </div>
-      <!-- Vertical toolbar -->
-      <!--
-      <div class="v-controls">
-        <button>&gt;&gt;&gt;</button>
-      </div>
-      -->
+      </div><div class="v-controls">&nbsp;</div>
       <!-- Horizontal toolbar -->
       <div class="controls">
+        <a href="#" class="expand-collapse">Collapse</a>
+        &nbsp;
+        Move:
+        <a href="#" class="move-up">Up</a>
+        | <a href="#" class="move-up">Dn</a>
+        &nbsp;
         Add: 
-        <a href="#" class="video">Video</a> 
-        | <a href="#" class="note">Note</a> 
-        | <a href="#" class="concept">Concept</a> 
+        <a href="#" class="add-video">Video</a> 
+        | <a href="#" class="add-note">Note</a> 
+        | <a href="#" class="add-concept">Concept</a> 
       </div>
     </script>
   </body>

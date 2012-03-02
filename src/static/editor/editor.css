@@ -1,4 +1,9 @@
 .node { font-family: "Kotta One"; }
+.ui-widget { 
+  font-family: Arial, Helvetica, Verdana, sans-serif; 
+  font-size: 0.9em; 
+}
+
 
 #editor {
   border: 3px solid black;
@@ -16,6 +21,9 @@
   padding: 0px 10px 0px 0px;
 }
 
+#editor table .ui-resizable-handle {
+  z-index: 10;
+}
 #editor table .ui-resizable-handle.ui-resizable-e {
   width: 15px;
   height: 100%;
@@ -26,9 +34,6 @@
   margin-top: 5px;
   margin-left: 5px;
 }
-.container .edit {
-  display: none;
-}
 
 .container .name .display {
   text-decoration: underline;
@@ -36,18 +41,36 @@
 .container p {
   margin: 5px 0 0 0;
 }
-.container .controls {
-  font-size: 9pt;
-  font-family: monospace, "Courier New";
-  font-weight: bold;
-  padding: 5px 5px 5px 5px;
-  text-align: right;
-}
 .container .main {
   display: inline-block;
+  border: thin solid #000;
+  margin-right: 0px;
+  padding-bottom: 10px;
 }
 
+.node .v-controls { display: none; }
+.node .controls   { display: none; }
+
+.node.focused > .container .v-controls {
+  width: 20px;
+  background: #000;
+  vertical-align: top;
+  display: inline-block;
+  margin-left: 0px;
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
+}
+.node.focused > .container .controls {
+  font-size: 11px;
+  font-family: monospace, "Courier New";
+  font-weight: bold;
+  text-align: right;
+  margin-top: -10px;
+  background: #000;
+  display: block;
+  color: #ddd;
+}
 .container .controls a {
-  color: #aaa;
+  color: #fff;
   text-decoration: none;
 }
