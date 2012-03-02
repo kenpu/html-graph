@@ -1,76 +1,36 @@
-var treeData = {
-  id: 1,
-  title: 'Compiler',
-  bullet: function() {
-            return $('<span>').addClass(
-                    "ui-icon ui-icon-circle-plus")
-          },
-  children: [
-    {id: 2, 
-     title: "Regular languages",
-     children: [
-        {id: 3,
-         title : 'Automaton', children : []
-        },
-        {id: 4,
-         title : 'Regular expressions', children : []
-        }
-     ]
-    },
-    {id: 5,
-     title: "Context free languages",
-     children : []
-    }
-  ]
-};
-
-var ConceptModel = Backbone.Model.extend({
-  defaults: function() {
-    return {
-      name: "",
-      desc: "",
-      content: "",
-      meta: {},
-      style: {}
-      order: 0,
-      parent: null
-    };
-  }
-});
-
-var ConceptMapModel = Backbone.Collection.extend({
-  model: ConceptModel
-});
-
-(function($) {
-  /* Initializes the editor nodes */
-  $.fn.E_Initialize = function() {
-    var model = new ConceptModel();
-    $(this).data('model', model);
-    var $container = $(this).find(".container:first");
-    $container.append(
-      $('<div>').addClass("name display"),
-      $('<div>').addClass("name display"),
-    );
-  };
-})(jQuery);
+var conceptTree = new ConceptTree([
+  { name: "Compiler",
+    desc: "Taught by Ken Pu, Ph.D.",
+    children: ["Lexical analysis", "Context free grammar", "Code generation"]
+  },
+  { name: "Lexical analysis",
+    desc: "Breaking strings into little pieces"
+  },
+  { name: "Context free grammar",
+    desc: "Complex structures and putting things back in order"
+  },
+  { name: "Code generation",
+    desc: "Finall, run Lola run"
+  },
+]);
 
 $(function() {
+
+  var container_template = _.template($("#container-template").html());
+
   $("#concept-tree")
     .on("click", ".bullet", function(e) {
       $(this).T_Node().T_ToggleCollapse();
     })
-    .on("node-created", ".node", function(e) {
-      $(this).E_Initialize();
+    .on("node-loaded", ".node", function(e, $n) {
+      $n.find(".container:first")
+        .html(container_template($n.T_Model().toJSON()));
       return false;
     });
-  var $root = $.T_MakeTree({
-    parent: "#concept-tree",
-    json: treeData
-  }).T_IndentedStyle();
 
-  var $r2 = $.T_MakeTree({
-    parent: "#concept-content",
-    json: treeData
+  var $root = $.T_LoadCollection({
+    parent: "#concept-tree",
+    nodes: conceptTree,
+    root: conceptTree.at(0)
   }).T_IndentedStyle();
 });

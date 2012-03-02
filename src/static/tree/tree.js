@@ -1,3 +1,23 @@
+var ConceptModel = Backbone.Model.extend({
+  defaults: function() {
+    return {
+      name: "",
+      desc: "",
+      content: "",
+      meta: {},
+      style: {},
+      order: 0,
+      children: []
+    };
+  },
+  idAttribute: "name"
+});
+
+var ConceptTree = Backbone.Collection.extend({
+  model: ConceptModel
+});
+
+
 /*
  * The structure
  *    .node
@@ -12,11 +32,15 @@
   * o.parent: DOM
   * o.container: DOM / HTML
   * o.bullet: DOM / HTML
-  * o.id: string
+  * o.model: { attr: val }
+  * o.silence: boolean - raise event or not
   */
   $.T_MakeNode = function(o) {
     o = $.extend({}, o);
-    var $n = $('<div>').addClass("node").attr('id', o.id);
+    var model = o.model;
+    var $n = $('<div>').addClass("node")
+                       .attr('id', model.id)
+                       .data('model', model);
     var bullet = (typeof(o.bullet) == 'function' ? o.bullet() : o.bullet);
     $n.append(
       $('<div>').addClass("bullet").html(bullet),
@@ -36,31 +60,32 @@
     }
 
     // Create a model for the node
-    $n.trigger("node-created", [$n]);
-    $p.trigger("subtree-changed");
+    if(! o.silence) {
+      $n.trigger("node-created", [$n]);
+    }
     return $n
   };
 
-  /*
-   * o.parent: DOM
-   * o.json: { id: string
-   *           title: string
-   *           children: [ ... ]
-   *         }
-   */
-  $.T_MakeTree = function(o) {
+  $.fn.T_Model = function() {
+    return $(this).data('model');
+  };
+
+  $.T_LoadCollection = function(o) {
     var $n = $.T_MakeNode({
-           parent: o.parent,
-           container: o.json.title,
-           bullet: o.json.bullet,
-           id: o.json.id
+               parent: o.parent,
+               container: o.root.get('name') + ":" + o.root.get('desc'),
+               model: o.root,
+               silence: true
+             });
+    _.each(o.root.get('children'), function(name) {
+      var m = o.nodes.get(name);
+      if(m) $.T_LoadCollection({
+              parent: $n,
+              nodes: o.nodes,
+              root: m
+            });
     });
-    $.each(o.json.children, function(i, x) {
-      $.T_MakeTree({
-        parent: $n,
-        json: $.extend(_.clone(o.json), x)
-      });
-    });
+    $n.trigger('node-loaded', [$n]);
     return $n;
   };
 
