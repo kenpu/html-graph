@@ -8,8 +8,8 @@
 #editor {
   border: 3px solid black;
   min-width: 600px;
-  min-height: 300px;
   margin: 20px 20px 20px 20px;
+  height: 500px;
 }
 
 #editor table {
@@ -28,6 +28,11 @@
   width: 15px;
   height: 100%;
   background: #888;
+}
+
+#concept-tree {
+  height: 100%;
+  overflow: auto;
 }
 
 .node {

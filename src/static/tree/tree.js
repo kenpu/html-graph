@@ -3,18 +3,30 @@ var ConceptModel = Backbone.Model.extend({
     return {
       name: "",
       desc: "",
-      content: "",
-      meta: {},
-      style: {},
-      order: 0,
       children: []
     };
   },
-  idAttribute: "name"
+  removeChild: function(id) {
+    var c = this.get('children');
+    var i = c.indexOf(id);
+    if(i >= 0) {
+      c.splice(i, 1);
+      this.save();
+    }
+  },
+  addChild: function(id) {
+    var c = this.get('children');
+    var i = c.indexOf(id);
+    if(i < 0) {
+      c.push(id);
+      this.save();
+    }
+  }
 });
 
 var ConceptTree = Backbone.Collection.extend({
-  model: ConceptModel
+  model: ConceptModel,
+  url: "/concepts"
 });
 
 
@@ -36,7 +48,10 @@ var ConceptTree = Backbone.Collection.extend({
   * o.silence: boolean - raise event or not
   */
   $.T_MakeNode = function(o) {
-    o = $.extend({}, o);
+    o = $.extend({
+      container: "",
+      silence: false
+    }, o);
     var model = o.model;
     var $n = $('<div>').addClass("node")
                        .attr('id', model.id)
@@ -53,7 +68,7 @@ var ConceptTree = Backbone.Collection.extend({
     if(o.parent) {
       var $p = $(o.parent);
       if($p.is(".node")) {
-        $p.find(".children:first").append($n);
+        $p.T_Append($n);
       } else {
         $p.append($n);
       }
@@ -61,9 +76,28 @@ var ConceptTree = Backbone.Collection.extend({
 
     // Create a model for the node
     if(! o.silence) {
+      console.debug("trigger node-created");
       $n.trigger("node-created", [$n]);
     }
     return $n
+  };
+  
+  $.fn.T_Parent = function() {
+    return $(this).parent().closest(".node");
+  }
+  
+  $.fn.T_Append = function($n) {
+    var $p = $(this);
+    var pmodel = $p.T_Model();
+    var nmodel = $n.T_Model();
+    var prevmodel = $n.T_Parent().T_Model();
+    // Do DOM manipulation
+    $n.detach();
+    $p.find(".children:first").append($n);
+    // Do model manipulation
+    if(prevmodel)
+      prevmodel.removeChild(nmodel.id);
+    pmodel.addChild(nmodel.id);
   };
 
   $.fn.T_Model = function() {
@@ -74,8 +108,7 @@ var ConceptTree = Backbone.Collection.extend({
     var $n = $.T_MakeNode({
                parent: o.parent,
                container: o.root.get('name') + ":" + o.root.get('desc'),
-               model: o.root,
-               silence: true
+               model: o.root
              });
     _.each(o.root.get('children'), function(name) {
       var m = o.nodes.get(name);
@@ -85,7 +118,6 @@ var ConceptTree = Backbone.Collection.extend({
               root: m
             });
     });
-    $n.trigger('node-loaded', [$n]);
     return $n;
   };
 

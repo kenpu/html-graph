@@ -1,18 +1,4 @@
-var conceptTree = new ConceptTree([
-  { name: "Compiler",
-    desc: "Taught by Ken Pu, Ph.D.",
-    children: ["Lexical analysis", "Context free grammar", "Code generation"]
-  },
-  { name: "Lexical analysis",
-    desc: "Breaking strings into little pieces"
-  },
-  { name: "Context free grammar",
-    desc: "Complex structures and putting things back in order"
-  },
-  { name: "Code generation",
-    desc: "Finally, run Lola run"
-  },
-]);
+var conceptTree = new ConceptTree;
 
 (function($) {
   $.fn.Edit = function() {
@@ -30,14 +16,13 @@ var conceptTree = new ConceptTree([
       name: $d.find("input").val(),
       desc: $d.find("textarea").val()
     });
-    $(this).find(".name .display").text(m.get('name'));
-    $(this).find(".desc .display").html(m.get('desc'));
-    alert('new name = ' + m.get('name'));
+    $(this).find(".container:first .name .display").text(m.get('name'));
+    $(this).find(".container:first .desc .display").html(m.get('desc'));
+    m.save();
   };
 })(jQuery);
 
 $(function() {
-
   var container_template = _.template($("#container-template").html());
 
   /* Events */
@@ -68,18 +53,45 @@ $(function() {
       }
       return false;
     })
+    .on("click", ".add-concept", function(e) {
+      var $n = $(this).T_Node();
+      var m = new ConceptModel({name: 'New concept'});
+      conceptTree.add(m);
+      m.save({}, {
+        success: function() {
+          $n.T_Append($.T_MakeNode({model: m, parent: '#concept-tree'}));
+        },
+        error: function() {
+          alert("Server cannot create node.");
+        }
+      });
+    })
     ;
 
   $("#concept-tree")
-    .on("node-loaded", ".node", function(e, $n) {
+    .on("node-created", ".node", function(e, $n) {
       $n.find(".container:first")
         .html(container_template($n.T_Model().toJSON()));
       return false;
     });
 
-  var $root = $.T_LoadCollection({
-    parent: "#concept-tree",
-    nodes: conceptTree,
-    root: conceptTree.at(0)
-  }).T_IndentedStyle();
+  /* Load ConceptTree */
+  var load = function() {
+    $.T_LoadCollection({
+        parent: "#concept-tree",
+        nodes: conceptTree,
+        root: conceptTree.at(0)})
+     .T_IndentedStyle();    
+  };
+  conceptTree.fetch({
+    success: function() {
+      if(! conceptTree.length)
+        conceptTree.create({name: 'Root'}, {
+          wait: true,
+          success: load
+        });
+      else
+        load();
+    }
+  });
 });
