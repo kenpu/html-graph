@@ -7,25 +7,34 @@ var conceptTree = new ConceptTree;
     $d.data('node', $(this));
     $d.find("input").val(m.get('name'));
     $d.find("textarea").val(m.get('desc'));
+    $d.dialog('option', 'title', $(this).T_Path());
     $d.dialog('open');
   };
   $.fn.Save = function() {
     var $d = $("#node-edit-dialog");
     var m = $(this).T_Model();
-    m.set({
+    m.save({
       name: $d.find("input").val(),
       desc: $d.find("textarea").val()
     });
     $(this).find(".container:first .name .display").text(m.get('name'));
     $(this).find(".container:first .desc .display").html(m.get('desc'));
-    m.save();
   };
 })(jQuery);
 
+/***************************************************
+ * Initialization
+ ***************************************************/
+ 
 $(function() {
   var container_template = _.template($("#container-template").html());
-
-  /* Events */
+  /*----------------------------------
+   * Events 
+   *----------------------------------*/
+   
+  //
+  // click sets focus to the node
+  //
   $("#concept-tree")
     .on("click", ".container", function(e) {
       var $n = $(this).T_Node();
@@ -36,11 +45,21 @@ $(function() {
         $n.addClass("focused");
       }
       return false;
-    })
+    });
+  //
+  // double click opens the edit dialog
+  //
+  $("#concept-tree")
     .on("dblclick", ".container .main", function(e) {
       $(this).T_Node().Edit();
       return false;
-    })
+    });
+  //
+  // click on individual controls invokes actions
+  // The event is bubbled to .controls which
+  // losses the focus and stops the event propagation.
+  //
+  $("#concept-tree")
     .on("click", ".expand-collapse", function(e) {
       var $n = $(this).T_Node();
       $n.toggleClass("collapsed");
@@ -51,7 +70,6 @@ $(function() {
         $(this).text("Collapse");
         $n.find(".children:first").show();
       }
-      return false;
     })
     .on("click", ".add-concept", function(e) {
       var $n = $(this).T_Node();
@@ -66,8 +84,17 @@ $(function() {
         }
       });
     })
+    .on("click", ".del-node", function(e) {
+      $(this).T_Node().T_Destroy();
+    })
+    .on("click", ".controls", function(e) {
+      $("#concept-tree .node").removeClass("focused");
+      e.stopPropagation();
+    });
     ;
 
+  // when nodes are created, we initialize its content with
+  // a template instance.
   $("#concept-tree")
     .on("node-created", ".node", function(e, $n) {
       $n.find(".container:first")

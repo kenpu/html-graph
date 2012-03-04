@@ -1,3 +1,7 @@
+html,body {
+  height: 100%;
+}
+
 .node { font-family: "Kotta One"; }
 .ui-widget { 
   font-family: Arial, Helvetica, Verdana, sans-serif; 
@@ -23,23 +27,55 @@
 
 #editor table .ui-resizable-handle {
   z-index: 10;
-}
-#editor table .ui-resizable-handle.ui-resizable-e {
   width: 15px;
   height: 100%;
   background: #888;
+
+}
+
+#editor table td {
+  vertical-align: top;
 }
 
 #concept-tree {
   height: 100%;
   overflow: auto;
+  white-space: nowrap;
+}
+
+#content-editor {
+  min-width: 600px;
+  height: 400px;
+}
+
+#concept-content textarea {
+  width: 100%;
+  height: 100%;
+  font-family: 12pt;
+  font-family: "Consolas",monospace,"New Courier";
+}
+
+#concept-content .content textarea {
+  background: #000;
+  color: #ff0;
+}
+#concept-content .metadata textarea {
+  background: #222;
+  color: #fff;
 }
 
 .node {
   margin-top: 5px;
   margin-left: 5px;
+  max-width: 500px;
+  -webkit-user-select: none;
 }
-
+.node.collapsed  > .container .main {
+  box-shadow: 5px 5px 5px #ff0;
+}
+.node .container .main {
+  max-width: 450px;
+}
 .container .name .display {
   text-decoration: underline;
 }
@@ -48,7 +84,8 @@
 }
 .container .main {
   display: inline-block;
-  border: thin solid #000;
+  border: thin solid #aaa;
+  border-radius: 3px;
   margin-right: 0px;
   padding-bottom: 10px;
 }

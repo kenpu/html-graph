@@ -82,22 +82,45 @@ var ConceptTree = Backbone.Collection.extend({
     return $n
   };
   
+  $.fn.T_Destroy = function() {
+    $(this).T_Descendents().each(function(i, x) {
+      console.debug("destroy mode: " + $(x).T_Model().id);
+      $(x).T_Model().destroy();
+    });
+    $(this).T_Detach().T_Model().destroy();
+  };
+  
   $.fn.T_Parent = function() {
     return $(this).parent().closest(".node");
-  }
+  };
+  
+  $.fn.T_Descendents = function() {
+    return $(this).find(".node");
+  };
+  
+  $.fn.T_Path = function() {
+    return $(this).parents(".node").andSelf()
+           .map(function(i, x){ return $(x).T_Model().get('name'); })
+           .toArray().join(" / ");
+  };
+  
+  $.fn.T_Detach = function() {
+    var $n = $(this);
+    var pmodel = $n.T_Parent().T_Model();
+    var nmodel = $n.T_Model();
+    if(pmodel) {
+      pmodel.removeChild(nmodel.id);
+    }
+    return $n.detach();
+  };
   
   $.fn.T_Append = function($n) {
     var $p = $(this);
     var pmodel = $p.T_Model();
     var nmodel = $n.T_Model();
-    var prevmodel = $n.T_Parent().T_Model();
-    // Do DOM manipulation
-    $n.detach();
-    $p.find(".children:first").append($n);
-    // Do model manipulation
-    if(prevmodel)
-      prevmodel.removeChild(nmodel.id);
+    $(this).find(".children:first").append($n.T_Detach());
     pmodel.addChild(nmodel.id);
+    return $(this);
   };
 
   $.fn.T_Model = function() {
@@ -120,7 +143,6 @@ var ConceptTree = Backbone.Collection.extend({
     });
     return $n;
   };
-
 
   $.fn.T_Node = function() {
     return $(this).closest(".node");

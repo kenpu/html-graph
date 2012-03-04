@@ -1,5 +1,6 @@
 <html>
   <head>
+    <title>Concept tree</title>
     <script src="../lib/jquery-1.7.1.min.js"></script>
     <script src="../lib/jquery-ui-1.8.18.custom.min.js"></script>
     <link rel="stylesheet" href="../lib/jquery-ui-1.8.18.custom.css"/>
@@ -11,16 +12,34 @@
     <script src="editor.js"></script>
     <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Kotta+One"/>
     <style>
+    #node-edit-dialog .label {
+      width: 150px;
+      text-align: right;
+      font-weight: bold;
+      display: inline-block;
+      vertical-align: top;
+    }
+    #node-edit-dialog input { width: 150px; }
+    #node-edit-dialog textarea {
+      width: 350px;
+      height: 200px;
+      vertical-align: top;
+    }
+
     </style>
     <script>
       $(function() {
-        $(".ui-split div:first").resizable({
+        
+        $("#concept-tree").resizable({
           handles: "e",
           minWidth: 200
         });
+        
+        $("#content-editor").accordion({fillSpace: true});
         $("#node-edit-dialog").dialog({
           autoOpen: false,
           modal: true,
+          width: 600,
           buttons: {
             'Okay': function() {
               $(this).data('node').Save();
@@ -36,7 +55,6 @@
   </head>
 
   <body>
-    <h1>Teaching</h1>
     <div id="editor">
       <table>
         <tr>
@@ -44,15 +62,23 @@
             <div id="concept-tree" class="ui-pane"></div>
           </td>
           <td class="ui-split">
-            <div id="concept-content" class="ui-pane"></div>
+            <div id="concept-content">
+              <button>Save</button> <button>Reload</button> <span id="concept-name"></span>
+              <div id="content-editor">
+                <h3><a href="#">Content</a></h3>
+                <div class="content"><textarea></textarea></div>
+                <h3><a href="#">Meta</a></h3>
+                <div class="metadata"><textarea></textarea></div>
+              </div>
+            </div>
           </td>
         </tr>
       </table>
     </div>
 
     <div id="node-edit-dialog">
-      <input type="text"></input>
-      <textarea></textarea>
+      <div class="label">Name:</div> <input type="text"></input> <br/>
+      <div class="label">Description:</div> <textarea></textarea>
     </div>
 
     <script type="text/template" id="container-template">
@@ -76,6 +102,8 @@
         <a href="#" class="add-video">Video</a> 
         | <a href="#" class="add-note">Note</a> 
         | <a href="#" class="add-concept">Concept</a> 
+        &nbsp;
+        <a href="#" class="del-node">Del</a>
       </div>
     </script>
   </body>

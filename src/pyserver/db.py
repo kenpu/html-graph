@@ -42,10 +42,10 @@ def db_update_concept(db, oid, data):
   c = db.cursor()
   c.execute("update Concept set json = ? where oid = ?", [data, oid])
   db.commit()
-  return 0
+  return {'updated': '3/3/2012'}
 
 def db_delete_concept(db, oid):
   c = db.cursor()
   c.execute("delete from Concept where oid = ?", [oid])
   db.commit()
-  return 0
+  return {'updated': '3/3/2012'}
